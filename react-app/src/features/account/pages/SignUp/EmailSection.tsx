@@ -1,12 +1,11 @@
-import { Link, Stack, Typography } from "@mui/material";
+import { Checkbox, Link, Stack, Typography } from "@mui/material";
 import { PasswordTextField, TextField } from "../../../../components/TextField";
-import { SecondaryButton } from "../../../../components/buttons";
+import { PrimaryButton } from "../../../../components/buttons";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { SignUpData, SignUpSchema } from "../../schemas/signup-schema";
-import { firebaseAuth } from "../../services/firebase-service";
 
-export default function EmailSection() {
+export function EmailSection() {
   const {
     register,
     handleSubmit,
@@ -16,47 +15,44 @@ export default function EmailSection() {
   });
 
   const onSubmit: SubmitHandler<SignUpData> = async (data) => {
-    const r = await firebaseAuth.createUserWithEmailAndPassword(
-      data.email,
-      data.password
-    );
-    console.log(r);
+    console.log(data);
   };
 
   return (
     <Stack
       component="form"
       alignItems="center"
-      sx={{ width: "100%" }}
+      width="100%"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <TextField
-        name="email"
-        label="Email"
-        inputProps={{
-          ...register("email"),
-        }}
-        error={!!errors.email}
-        helperText={errors.email?.message}
-      />
-      <PasswordTextField
-        label="Password"
-        extraInputProps={{ ...register("password") }}
-        error={!!errors.password}
-        helperText={errors.password?.message}
-      />
-      <SecondaryButton type="submit" sx={{ py: 1.5, width: "100%", mt: 4 }}>
-        Continue
-      </SecondaryButton>
-      <Typography
-        variant="body1"
-        sx={{
-          fontSize: "0.875rem",
-          p: 1,
-        }}
-      >
-        Already an account? <Link href="/login">Log in</Link>
-      </Typography>
+      <Stack gap={1.5} mb={4} width="100%">
+        <TextField
+          label="Email"
+          name="email"
+          autoComplete="email"
+          placeholder="Enter your email address"
+          inputProps={{
+            ...register("email"),
+          }}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+        />
+        <PasswordTextField
+          label="Password"
+          extraInputProps={{ ...register("password") }}
+          error={!!errors.password}
+          helperText={errors.password?.message}
+        />
+      </Stack>
+      <Stack direction="row" mb={4} alignItems="center" width="100%">
+        <Checkbox />
+        <Typography variant="body1" fontWeight="500">
+          I agree to the <Link href="#">Terms of Service and Policy</Link>
+        </Typography>
+      </Stack>
+      <PrimaryButton size="small" type="submit" sx={{ width: "100%" }}>
+        Signup
+      </PrimaryButton>
     </Stack>
   );
 }

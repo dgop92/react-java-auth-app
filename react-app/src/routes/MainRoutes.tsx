@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { Login } from "../features/account/pages/Login";
-import { SignUp } from "../features/account/pages/SignUp";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import { PrivateRoute } from "../features/account/providers/PrivateRoute";
+import { SignUp } from "../features/account/pages/SignUp/SignUp";
 
 export default function MainRoutes() {
   return (

@@ -1,13 +1,15 @@
-import Button, { ButtonProps } from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
+import Button, { ButtonProps } from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
 
 export const PrimaryButton = styled((props: ButtonProps) => (
   <Button color="primary" variant="contained" {...props}>
     {props?.children}
   </Button>
 ))(({ theme }) => ({
-  fontWeight: 500,
-  borderRadius: theme.spacing(1.75),
+  fontWeight: "bold",
+  borderRadius: theme.spacing(1.5),
+  padding: theme.spacing(1),
+  fontSize: theme.typography.pxToRem(13),
 }));
 
 export const SecondaryButton = styled((props: ButtonProps) => (
@@ -15,6 +17,7 @@ export const SecondaryButton = styled((props: ButtonProps) => (
     {props?.children}
   </Button>
 ))(({ theme }) => ({
-  fontWeight: 500,
+  fontWeight: "bold",
   borderRadius: theme.spacing(1.75),
+  p: 1.5,
 }));

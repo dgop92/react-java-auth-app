@@ -11,15 +11,15 @@ declare module "@mui/material/styles/createTypography" {
 export const muiTheme = createTheme({
   palette: {
     primary: {
-      main: "hsla(228, 20.3%, 25.1%, 1)",
-      light: "hsla(228, 20.3%, 30%, 1)",
-      dark: "hsla(228, 19.6%, 20%, 1)",
+      main: "#5B7B7A",
+      light: "#729796",
+      dark: "#455E5D",
       contrastText: "#fff",
     },
     secondary: {
-      main: "hsla(208, 37.1%, 48%, 1);",
-      light: "hsla(208, 46.9%, 55.7%, 1)",
-      dark: "hsla(207, 37%, 36.1%, 1)",
+      main: "#EB6F47",
+      light: "#F09375",
+      dark: "#E64B19",
       contrastText: "#fff",
     },
     background: {
@@ -32,8 +32,8 @@ export const muiTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Quicksand", "Helvetica", "Arial", sans-serif',
-    titleFontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Poppins", sans-serif',
+    titleFontFamily: '"Poppins", sans-serif',
   },
 
   // Disable some google default styles
