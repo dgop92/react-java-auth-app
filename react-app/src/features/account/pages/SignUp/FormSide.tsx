@@ -1,4 +1,5 @@
-import { Stack, Typography } from "@mui/material";
+import { Link, Stack, Typography } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { EmailSection } from "./EmailSection";
 import { OAuthSection } from "./OAuthSection";
 
@@ -27,6 +28,12 @@ export function FormSide() {
         </Typography>
         <EmailSection />
         <OAuthSection />
+        <Typography variant="body1" fontWeight={500} textAlign="center" my={2}>
+          Have an account?{" "}
+          <Link component={RouterLink} to="/login" underline="none">
+            Log in
+          </Link>
+        </Typography>
       </Stack>
     </Stack>
   );
