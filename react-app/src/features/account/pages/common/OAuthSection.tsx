@@ -1,14 +1,15 @@
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import { googleProvider } from "../../providers/google-provider";
-import { firebaseAuth } from "../../services/firebase-service";
-import { signInWithPopup } from "firebase/auth";
 
-export function OAuthSection() {
-  const handleGoogleSignIn = async () => {
-    await signInWithPopup(firebaseAuth, googleProvider);
-  };
+export interface OAuthSectionProps {
+  onGoogleClick: () => void;
+  googleLabel: string;
+}
 
+export function OAuthSection({
+  onGoogleClick,
+  googleLabel,
+}: OAuthSectionProps) {
   return (
     <>
       <Stack
@@ -29,9 +30,9 @@ export function OAuthSection() {
         startIcon={<GoogleIcon />}
         fullWidth
         sx={{ py: 1 }}
-        onClick={handleGoogleSignIn}
+        onClick={onGoogleClick}
       >
-        Sing Up with Google
+        {googleLabel}
       </Button>
     </>
   );

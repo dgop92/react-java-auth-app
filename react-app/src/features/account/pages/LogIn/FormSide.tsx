@@ -1,7 +1,7 @@
 import { Link, Stack, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { EmailSection } from "./EmailSection";
-import { SignUpOAuthSection } from "./SignUpOAuthSection";
+import { LoginOAuthSection } from "./LoginOAuthSection";
 
 export function FormSide() {
   return (
@@ -21,17 +21,27 @@ export function FormSide() {
             fontFamily: "titleFontFamily",
             fontWeight: "medium",
             fontSize: 32,
+            mb: 1,
+          }}
+        >
+          Welcome back!
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            fontWeight: "medium",
+            fontSize: 16,
             mb: { xs: 7, md: 14 },
           }}
         >
-          Get Started Now
+          Enter your credentials to access your account
         </Typography>
         <EmailSection />
-        <SignUpOAuthSection />
+        <LoginOAuthSection />
         <Typography variant="body1" fontWeight={500} textAlign="center" my={2}>
-          Have an account?{" "}
-          <Link component={RouterLink} to="/login" underline="none">
-            Log in
+          Don't have an account?{" "}
+          <Link component={RouterLink} to="/signup" underline="none">
+            Sign up
           </Link>
         </Typography>
       </Stack>
