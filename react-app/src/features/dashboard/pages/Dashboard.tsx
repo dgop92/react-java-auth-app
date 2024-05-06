@@ -3,12 +3,15 @@ import { useAuth } from "../../account/providers/hooks";
 import { Box, Stack, Typography, Button } from "@mui/material";
 import { firebaseAuth } from "../../account/services/firebase-service";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const { firebaseUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await firebaseAuth.signOut();
+    navigate("/");
   };
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { PrimaryButton } from "../../../../components/buttons";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { LogInData, LogInSchema } from "../../schemas/login-schema";
+import { firebaseAuth } from "../../services/firebase-service";
 
 export function EmailSection() {
   const {
@@ -16,7 +17,11 @@ export function EmailSection() {
   });
 
   const onSubmit: SubmitHandler<LogInData> = async (data) => {
-    console.log(data);
+    try {
+      await firebaseAuth.signInWithEmailAndPassword(data.email, data.password);
+    } catch (error) {
+      console.error("Error signing in: ", error);
+    }
   };
 
   return (

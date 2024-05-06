@@ -5,7 +5,11 @@ import { OAuthSection } from "../common/OAuthSection";
 
 export function LoginOAuthSection() {
   const handleGoogleSignIn = async () => {
-    await signInWithPopup(firebaseAuth, googleProvider);
+    try {
+      await signInWithPopup(firebaseAuth, googleProvider);
+    } catch (error) {
+      console.error("Error signing in with Google: ", error);
+    }
   };
 
   return (
