@@ -8,6 +8,8 @@ import com.dgop92.authexample.features.account.definitions.user.IUserDeleteUseCa
 import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.User;
 import com.dgop92.authexample.path.ControllerPaths;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +35,13 @@ public class UserController {
 
 
     @PostMapping("/create-email-password")
-    AppUser createUserWithEmailPassword(@RequestBody EmailPasswordCreateDTO emailPasswordCreateDTO) {
+    ResponseEntity<AppUser> createUserWithEmailPassword(@RequestBody EmailPasswordCreateDTO emailPasswordCreateDTO) {
         EmailPasswordUserCreate emailPasswordUserCreate = EmailPasswordUserCreate.builder()
                 .email(emailPasswordCreateDTO.getEmail())
                 .password(emailPasswordCreateDTO.getPassword())
                 .build();
         User user = emailPasswordCreateUserService.create(emailPasswordUserCreate);
-        return user.getAppUser();
+        return new ResponseEntity<>(user.getAppUser(), HttpStatus.CREATED);
     }
 
     @GetMapping("/me")

@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         ApiError apiError = new ApiError(statusCode, path, userMessage, ex);
 
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+        return ResponseEntity.status(statusCode).body(apiError);
     }
 
     @ExceptionHandler(value = InvalidInputException.class)
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
 
         ApiError apiError = new ApiError(statusCode, path, userMessage, ex, fieldErrors);
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+        return ResponseEntity.status(statusCode).body(apiError);
     }
 
     @ExceptionHandler(value = RepositoryException.class)
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
 
         ApiError apiError = new ApiError(statusCode, path, userMessage, ex);
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+        return ResponseEntity.status(statusCode).body(apiError);
     }
 
     @ExceptionHandler(value = PresentationException.class)
@@ -59,6 +59,6 @@ public class GlobalExceptionHandler {
 
         ApiError apiError = new ApiError(statusCode, path, userMessage, ex);
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+        return ResponseEntity.status(statusCode).body(apiError);
     }
 }
