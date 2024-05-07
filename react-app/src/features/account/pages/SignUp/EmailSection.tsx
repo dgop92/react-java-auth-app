@@ -1,9 +1,19 @@
-import { Checkbox, Link, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  LinearProgress,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { PasswordTextField, TextField } from "../../../../components/TextField";
 import { PrimaryButton } from "../../../../components/buttons";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { SignUpData, SignUpSchema } from "../../schemas/signup-schema";
+import { useMutation } from "@tanstack/react-query";
+import { accountRepository } from "../../repositories/factory";
+import { firebaseAuth } from "../../services/firebase-service";
 
 export function EmailSection() {
   const {
@@ -14,8 +24,29 @@ export function EmailSection() {
     resolver: joiResolver(SignUpSchema),
   });
 
-  const onSubmit: SubmitHandler<SignUpData> = async (data) => {
-    console.log(data);
+  const mutation = useMutation({
+    mutationFn: async (data: SignUpData) => {
+      await accountRepository.registerWithEmail(data);
+    },
+    onSuccess: async (_, variables) => {
+      console.log("User registered successfully");
+      try {
+        await firebaseAuth.signInWithEmailAndPassword(
+          variables.email,
+          variables.password
+        );
+      } catch (error) {
+        console.log("An error occurred while signing in the user");
+      }
+    },
+    onError: (error) => {
+      console.log("An error occurred while registering the user");
+      console.log(error);
+    },
+  });
+
+  const onSubmit: SubmitHandler<SignUpData> = (data) => {
+    mutation.mutate(data);
   };
 
   return (
@@ -50,9 +81,16 @@ export function EmailSection() {
           I agree to the <Link href="#">Terms of Service and Policy</Link>
         </Typography>
       </Stack>
-      <PrimaryButton size="small" type="submit" sx={{ width: "100%" }}>
-        Signup
-      </PrimaryButton>
+
+      {mutation.isPending ? (
+        <Box width="100%">
+          <LinearProgress />
+        </Box>
+      ) : (
+        <PrimaryButton size="small" type="submit" sx={{ width: "100%" }}>
+          Signup
+        </PrimaryButton>
+      )}
     </Stack>
   );
 }
