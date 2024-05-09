@@ -9,12 +9,16 @@ import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.AuthUser;
 import com.dgop92.authexample.features.account.entities.IdpProfile;
 import com.dgop92.authexample.features.account.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 public class UserIdpCreateUseCase implements IdpCreateUserStrategy {
+
+    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
 
     private final IAppUserFindUseCase appUserFindUseCase;
     private final IAppUserCreateUseCase appUserCreateUseCase;
@@ -30,9 +34,16 @@ public class UserIdpCreateUseCase implements IdpCreateUserStrategy {
 
     @Override
     public User create(String authUserId, IdpProfile idpProfile) {
+        logger.info("Creating user with authUserId: {}", authUserId);
         AuthUser finalAuthUser = new AuthUser(authUserId);
 
         Optional<AppUser> appUser = appUserFindUseCase.getOneBy(AppUserSearch.builder().authUserId(authUserId).build());
+        if (appUser.isPresent()) {
+            logger.debug("Found existing AppUser for authUserId: {}", authUserId);
+        } else {
+            logger.debug("No existing AppUser found for authUserId: {}", authUserId);
+        }
+
         // TODO: validate email
         AppUserCreate.AppUserCreateBuilder appUserCreateBuilder = AppUserCreate.builder()
                 .email(idpProfile.getEmail());
@@ -47,8 +58,12 @@ public class UserIdpCreateUseCase implements IdpCreateUserStrategy {
 
         AppUserCreate appUserCreate = appUserCreateBuilder.build();
 
-        AppUser finalAppUser = appUser.orElseGet(() -> appUserCreateUseCase.create(appUserCreate, finalAuthUser));
+        AppUser finalAppUser = appUser.orElseGet(() -> {
+            logger.info("Creating new AppUser for authUserId: {}", authUserId);
+            return appUserCreateUseCase.create(appUserCreate, finalAuthUser);
+        });
 
+        logger.info("Successfully created user with authUserId: {}", authUserId);
         return User.builder()
                 .authUser(finalAuthUser)
                 .appUser(finalAppUser)

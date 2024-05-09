@@ -9,11 +9,16 @@ import com.dgop92.authexample.features.account.definitions.appuser.IAppUserCreat
 import com.dgop92.authexample.features.account.definitions.appuser.schemas.AppUserCreate;
 import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.AuthUser;
+import com.dgop92.authexample.features.account.usecases.user.UserIdpCreateUseCase;
 import jakarta.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AppUserCreateUseCase implements IAppUserCreateUseCase {
+
+    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
 
     private final Validator validator;
     private final AppUserJPARepository repository;
@@ -25,10 +30,13 @@ public class AppUserCreateUseCase implements IAppUserCreateUseCase {
 
     @Override
     public AppUser create(AppUserCreate input, AuthUser authUser) {
+        logger.info("Creating app user with email: {}", input.getEmail());
         ValidationUtils.validate(validator, input);
 
         String firstName = Utils.toBlankStringIfNull(input.getFirstName());
         String lastName = Utils.toBlankStringIfNull(input.getLastName());
+
+        logger.debug("Creating app user with first name: {} and last name: {}", firstName, lastName);
 
         AppUserJPA appUserJPA = AppUserJPA.builder()
                 .firstName(firstName)
@@ -39,6 +47,7 @@ public class AppUserCreateUseCase implements IAppUserCreateUseCase {
 
         AppUserJPA finalAppUserJPA = repository.save(appUserJPA);
 
+        logger.info("App user created with id: {}", finalAppUserJPA.getId());
         return AppUserMapper.jpaEntityToDomain(finalAppUserJPA);
     }
 }

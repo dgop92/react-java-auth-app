@@ -15,12 +15,16 @@ import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.AuthUser;
 import com.dgop92.authexample.features.account.entities.User;
 import jakarta.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 public class UserEmailPasswordCreateUseCase implements IEmailPasswordCreateUserStrategy {
+
+    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
 
     private final IAuthUserService authUserService;
 
@@ -47,6 +51,7 @@ public class UserEmailPasswordCreateUseCase implements IEmailPasswordCreateUserS
 
     @Override
     public User create(EmailPasswordUserCreate input) {
+        logger.info("Creating user with email: {}", input.getEmail());
         ValidationUtils.validate(validator, input);
 
         // Get or create the auth user
@@ -59,10 +64,13 @@ public class UserEmailPasswordCreateUseCase implements IEmailPasswordCreateUserS
         Optional<AppUser> appUser = appUserFindUseCase.getOneBy(AppUserSearch.builder().authUserId(userId).build());
 
         if (appUser.isPresent()) {
+            logger.debug("Found existing AppUser for userId: {}", userId);
             throw new ApplicationException(
                     "the provided email is already in use by an existing auth user",
                     ExceptionCode.DUPLICATED_RECORD
             );
+        } else {
+            logger.debug("No existing AppUser found for userId: {}", userId);
         }
 
         AppUserCreate appUserCreate = AppUserCreate.builder()
@@ -70,6 +78,7 @@ public class UserEmailPasswordCreateUseCase implements IEmailPasswordCreateUserS
                 .build();
         AppUser finalAppUser = appUserCreateUseCase.create(appUserCreate, finalAuthUser);
 
+        logger.info("Successfully created user with email: {}", input.getEmail());
         return User.builder()
                 .authUser(finalAuthUser)
                 .appUser(finalAppUser)

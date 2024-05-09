@@ -7,12 +7,16 @@ import com.dgop92.authexample.features.account.definitions.auth.IAuthUserService
 import com.dgop92.authexample.features.account.definitions.user.IUserDeleteUseCase;
 import com.dgop92.authexample.features.account.definitions.user.IUserFindUseCase;
 import com.dgop92.authexample.features.account.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 public class UserDeleteUseCase implements IUserDeleteUseCase {
+
+    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
 
     private final IUserFindUseCase userFindUseCase;
 
@@ -32,6 +36,7 @@ public class UserDeleteUseCase implements IUserDeleteUseCase {
 
     @Override
     public void deleteByUserId(String userId) {
+        logger.info("Deleting user with id: {}", userId);
         Optional<User> user = userFindUseCase.getOneByUserId(userId);
 
         if (user.isEmpty()) {
@@ -43,5 +48,7 @@ public class UserDeleteUseCase implements IUserDeleteUseCase {
 
         authUserService.delete(user.get().getAuthUser());
         appUserDeleteUseCase.deleteOneById(user.get().getAppUser().getId());
+
+        logger.info("User with id: {} was deleted", userId);
     }
 }

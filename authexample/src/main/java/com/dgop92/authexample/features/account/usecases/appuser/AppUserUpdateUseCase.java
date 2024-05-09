@@ -9,13 +9,18 @@ import com.dgop92.authexample.features.account.database.repositories.AppUserJPAR
 import com.dgop92.authexample.features.account.definitions.appuser.IAppUserUpdateUseCase;
 import com.dgop92.authexample.features.account.definitions.appuser.schemas.AppUserUpdate;
 import com.dgop92.authexample.features.account.entities.AppUser;
+import com.dgop92.authexample.features.account.usecases.user.UserIdpCreateUseCase;
 import jakarta.validation.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 public class AppUserUpdateUseCase implements IAppUserUpdateUseCase {
+
+    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
 
     private final Validator validator;
     private final AppUserJPARepository repository;
@@ -30,6 +35,8 @@ public class AppUserUpdateUseCase implements IAppUserUpdateUseCase {
     public AppUser update(AppUserUpdate input) {
         ValidationUtils.validate(validator, input);
 
+        logger.info("Updating app user with id: {}", input.getAppUserId());
+
         Optional<AppUserJPA> appUserJPAContainer = repository.findById(input.getAppUserId());
 
         if (appUserJPAContainer.isEmpty()) {
@@ -39,14 +46,17 @@ public class AppUserUpdateUseCase implements IAppUserUpdateUseCase {
         AppUserJPA appUserJPA = appUserJPAContainer.get();
 
         if (input.getFirstName() != null) {
+            logger.debug("Updating app user first name to: {}", input.getFirstName());
             appUserJPA.setFirstName(input.getFirstName());
         }
         if (input.getLastName() != null) {
+            logger.debug("Updating app user last name to: {}", input.getLastName());
             appUserJPA.setLastName(input.getLastName());
         }
 
         repository.save(appUserJPA);
 
+        logger.info("App user updated with id: {}", input.getAppUserId());
         return AppUserMapper.jpaEntityToDomain(appUserJPA);
     }
 }

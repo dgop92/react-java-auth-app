@@ -9,12 +9,16 @@ import com.dgop92.authexample.features.account.definitions.user.IUserFindUseCase
 import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.AuthUser;
 import com.dgop92.authexample.features.account.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 public class UserFindUseCase implements IUserFindUseCase {
+
+    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
 
     private final IAuthUserService authUserService;
 
@@ -27,14 +31,18 @@ public class UserFindUseCase implements IUserFindUseCase {
 
     @Override
     public Optional<User> getOneByUserId(String userId) {
+        logger.info("Finding user with id: {}", userId);
+
         Optional<AuthUser> authUser = authUserService.getOneById(userId);
         Optional<AppUser> appUser = appUserFindUseCase.getOneBy(AppUserSearch.builder().authUserId(userId).build());
 
         if (authUser.isEmpty() && appUser.isEmpty()) {
+            logger.info("Could not find user with id: {}", userId);
             return Optional.empty();
         }
 
         if (authUser.isPresent() && appUser.isPresent()) {
+            logger.info("Found user with id: {}", userId);
             return Optional.of(
                     User.builder()
                             .authUser(authUser.get())
@@ -42,6 +50,8 @@ public class UserFindUseCase implements IUserFindUseCase {
                             .build()
             );
         }
+
+        logger.warn("Could not find both auth and app user for id: {}", userId);
 
         if (authUser.isPresent()) {
             throw new ApplicationException(
