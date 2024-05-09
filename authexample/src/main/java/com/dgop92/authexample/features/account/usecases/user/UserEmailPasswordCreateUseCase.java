@@ -24,7 +24,7 @@ import java.util.Optional;
 @Component
 public class UserEmailPasswordCreateUseCase implements IEmailPasswordCreateUserStrategy {
 
-    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
+    Logger logger = LoggerFactory.getLogger(UserEmailPasswordCreateUseCase.class);
 
     private final IAuthUserService authUserService;
 

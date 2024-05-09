@@ -9,7 +9,6 @@ import com.dgop92.authexample.features.account.definitions.appuser.IAppUserCreat
 import com.dgop92.authexample.features.account.definitions.appuser.schemas.AppUserCreate;
 import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.AuthUser;
-import com.dgop92.authexample.features.account.usecases.user.UserIdpCreateUseCase;
 import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppUserCreateUseCase implements IAppUserCreateUseCase {
 
-    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
+    Logger logger = LoggerFactory.getLogger(AppUserCreateUseCase.class);
 
     private final Validator validator;
     private final AppUserJPARepository repository;

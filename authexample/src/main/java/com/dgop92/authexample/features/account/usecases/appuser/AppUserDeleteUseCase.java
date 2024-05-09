@@ -5,7 +5,6 @@ import com.dgop92.authexample.common.exceptions.ExceptionCode;
 import com.dgop92.authexample.features.account.database.entities.AppUserJPA;
 import com.dgop92.authexample.features.account.database.repositories.AppUserJPARepository;
 import com.dgop92.authexample.features.account.definitions.appuser.IAppUserDeleteUseCase;
-import com.dgop92.authexample.features.account.usecases.user.UserIdpCreateUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Component
 public class AppUserDeleteUseCase implements IAppUserDeleteUseCase {
 
-    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
+    Logger logger = LoggerFactory.getLogger(AppUserDeleteUseCase.class);
 
     private final AppUserJPARepository repository;
 

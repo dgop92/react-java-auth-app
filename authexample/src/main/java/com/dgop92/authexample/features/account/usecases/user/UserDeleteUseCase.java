@@ -16,7 +16,7 @@ import java.util.Optional;
 @Component
 public class UserDeleteUseCase implements IUserDeleteUseCase {
 
-    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
+    Logger logger = LoggerFactory.getLogger(UserDeleteUseCase.class);
 
     private final IUserFindUseCase userFindUseCase;
 

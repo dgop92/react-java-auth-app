@@ -18,7 +18,7 @@ import java.util.Optional;
 @Component
 public class UserFindUseCase implements IUserFindUseCase {
 
-    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
+    Logger logger = LoggerFactory.getLogger(UserFindUseCase.class);
 
     private final IAuthUserService authUserService;
 

@@ -9,7 +9,6 @@ import com.dgop92.authexample.features.account.database.repositories.AppUserJPAR
 import com.dgop92.authexample.features.account.definitions.appuser.IAppUserUpdateUseCase;
 import com.dgop92.authexample.features.account.definitions.appuser.schemas.AppUserUpdate;
 import com.dgop92.authexample.features.account.entities.AppUser;
-import com.dgop92.authexample.features.account.usecases.user.UserIdpCreateUseCase;
 import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,7 @@ import java.util.Optional;
 @Component
 public class AppUserUpdateUseCase implements IAppUserUpdateUseCase {
 
-    Logger logger = LoggerFactory.getLogger(UserIdpCreateUseCase.class);
+    Logger logger = LoggerFactory.getLogger(AppUserUpdateUseCase.class);
 
     private final Validator validator;
     private final AppUserJPARepository repository;
