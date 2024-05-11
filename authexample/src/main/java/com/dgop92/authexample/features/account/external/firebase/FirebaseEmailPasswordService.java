@@ -9,10 +9,14 @@ import com.google.firebase.auth.AuthErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FirebaseEmailPasswordService implements IEmailPasswordCreateAuthUserStrategy {
+
+    Logger logger = LoggerFactory.getLogger(FirebaseEmailPasswordService.class);
 
     @Override
     public AuthUser create(EmailPasswordUserCreate input) {
@@ -23,8 +27,11 @@ public class FirebaseEmailPasswordService implements IEmailPasswordCreateAuthUse
                 .setPassword(input.getPassword())
                 .setDisabled(false);
 
+
         try {
+            logger.info("Creating firebase user with email: {}", input.getEmail());
             UserRecord user = FirebaseAuth.getInstance().createUser(request);
+            logger.info("Firebase user created with email: {}", input.getEmail());
             return new AuthUser(user.getUid());
         } catch (FirebaseAuthException e) {
             if (e.getAuthErrorCode().equals(AuthErrorCode.EMAIL_ALREADY_EXISTS)) {
