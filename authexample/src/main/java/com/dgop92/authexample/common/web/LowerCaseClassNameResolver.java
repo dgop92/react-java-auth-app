@@ -1,4 +1,4 @@
-package com.dgop92.authexample.common.rest;
+package com.dgop92.authexample.common.web;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;

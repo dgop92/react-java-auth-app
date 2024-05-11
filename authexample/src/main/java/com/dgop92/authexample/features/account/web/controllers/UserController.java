@@ -1,13 +1,15 @@
-package com.dgop92.authexample.features.account.controllers.user;
+package com.dgop92.authexample.features.account.web.controllers;
 
-import com.dgop92.authexample.features.account.controllers.RestAuthUtils;
-import com.dgop92.authexample.features.account.controllers.user.dto.EmailPasswordCreateDTO;
+import com.dgop92.authexample.features.account.web.RestAuthUtils;
+import com.dgop92.authexample.features.account.web.controllers.dto.EmailPasswordCreateDTO;
 import com.dgop92.authexample.features.account.definitions.auth.schemas.EmailPasswordUserCreate;
 import com.dgop92.authexample.features.account.definitions.user.IEmailPasswordCreateUserStrategy;
 import com.dgop92.authexample.features.account.definitions.user.IUserDeleteUseCase;
 import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.User;
 import com.dgop92.authexample.path.ControllerPaths;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -35,6 +37,7 @@ public class UserController {
 
 
     @PostMapping("/create-email-password")
+    @Operation(summary = "Create a user with email and password")
     ResponseEntity<AppUser> createUserWithEmailPassword(@RequestBody EmailPasswordCreateDTO emailPasswordCreateDTO) {
         EmailPasswordUserCreate emailPasswordUserCreate = EmailPasswordUserCreate.builder()
                 .email(emailPasswordCreateDTO.getEmail())
@@ -45,6 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
+    @Operation(summary = "Get the current user", security = @SecurityRequirement(name = "bearerAuth"))
     AppUser getMe(Authentication authentication) {
         User user = restAuthUtils.getUserFromAuthentication(authentication);
         return user.getAppUser();

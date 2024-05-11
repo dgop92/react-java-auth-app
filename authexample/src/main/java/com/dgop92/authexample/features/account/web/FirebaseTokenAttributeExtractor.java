@@ -1,4 +1,4 @@
-package com.dgop92.authexample.features.account.controllers;
+package com.dgop92.authexample.features.account.web;
 
 import com.dgop92.authexample.common.exceptions.ExceptionCode;
 import com.dgop92.authexample.common.exceptions.PresentationException;

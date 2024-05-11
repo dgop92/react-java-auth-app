@@ -1,4 +1,4 @@
-package com.dgop92.authexample.features.account.security;
+package com.dgop92.authexample.features.account.web;
 
 import com.dgop92.authexample.path.ControllerPaths;
 import org.springframework.beans.factory.annotation.Value;

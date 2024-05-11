@@ -1,4 +1,4 @@
-package com.dgop92.authexample.common.rest;
+package com.dgop92.authexample.common.web;
 
 import com.dgop92.authexample.common.exceptions.ExceptionCode;
 import org.springframework.http.HttpStatus;

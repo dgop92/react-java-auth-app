@@ -1,4 +1,4 @@
-package com.dgop92.authexample.features.account.controllers.user.dto;
+package com.dgop92.authexample.features.account.web.controllers.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
