@@ -1,7 +1,11 @@
 package com.dgop92.authexample.features.account.web.controllers;
 
 import com.dgop92.authexample.common.web.ApiError;
+import com.dgop92.authexample.features.account.definitions.appuser.schemas.AppUserUpdate;
+import com.dgop92.authexample.features.account.entities.AppUser;
+import com.dgop92.authexample.features.account.usecases.appuser.AppUserUpdateUseCase;
 import com.dgop92.authexample.features.account.web.RestAuthUtils;
+import com.dgop92.authexample.features.account.web.controllers.dto.AppUserUpdateDTO;
 import com.dgop92.authexample.features.account.web.controllers.schemas.AppUserSchema;
 import com.dgop92.authexample.features.account.web.controllers.dto.EmailPasswordCreateDTO;
 import com.dgop92.authexample.features.account.definitions.auth.schemas.EmailPasswordUserCreate;
@@ -31,15 +35,19 @@ public class UserController {
 
     private final IUserDeleteUseCase userDeleteUseCase;
 
+    private final AppUserUpdateUseCase appUserUpdateUseCase;
+
     private final RestAuthUtils restAuthUtils;
 
     public UserController(
             IEmailPasswordCreateUserStrategy emailPasswordCreateUserService,
             IUserDeleteUseCase userDeleteUseCase,
+            AppUserUpdateUseCase appUserUpdateUseCase,
             RestAuthUtils restAuthUtils
     ) {
         this.emailPasswordCreateUserService = emailPasswordCreateUserService;
         this.userDeleteUseCase = userDeleteUseCase;
+        this.appUserUpdateUseCase = appUserUpdateUseCase;
         this.restAuthUtils = restAuthUtils;
     }
 
@@ -93,6 +101,35 @@ public class UserController {
     ResponseEntity<AppUserSchema> getMe(Authentication authentication) {
         User user = restAuthUtils.getUserFromAuthentication(authentication);
         AppUserSchema appUserSchema = SchemaAdapters.appUserEntityToSchema(user.getAppUser());
+        return new ResponseEntity<>(appUserSchema, HttpStatus.OK);
+    }
+
+    @PatchMapping("/me")
+    @Operation(summary = "Update the app user of the current authenticated user", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = AppUserSchema.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "401", content = {@Content(mediaType = "application/json")})
+    })
+    ResponseEntity<AppUserSchema> updateMe(Authentication authentication, @RequestBody AppUserUpdateDTO appUserUpdateDTO) {
+        User user = restAuthUtils.getUserFromAuthentication(authentication);
+        AppUserUpdate appUserUpdate = AppUserUpdate.builder()
+                .appUserId(user.getAppUser().getId())
+                .firstName(appUserUpdateDTO.getFirstName())
+                .lastName(appUserUpdateDTO.getLastName())
+                .build();
+        AppUser appUserUpdated = appUserUpdateUseCase.update(appUserUpdate);
+        AppUserSchema appUserSchema = SchemaAdapters.appUserEntityToSchema(appUserUpdated);
         return new ResponseEntity<>(appUserSchema, HttpStatus.OK);
     }
 
