@@ -13,7 +13,7 @@ public class FirebaseTokenAttributeExtractor {
     public static IdpProfile getIdpProfile(Authentication authentication) {
         if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
             Map<String, Object> tokenAttrs = jwtAuthenticationToken.getTokenAttributes();
-            String name = tokenAttrs.get("name").toString();
+            String name = tokenAttrs.getOrDefault("name", "").toString();
             // split by space
             String[] nameParts = name.split(" ");
             String firstName = nameParts[0];
@@ -24,6 +24,7 @@ public class FirebaseTokenAttributeExtractor {
                 lastName = String.join(" ", nameParts).trim();
             }
 
+            // A valid firebase token will always have an email
             String email = tokenAttrs.get("email").toString();
 
             return IdpProfile.builder().firstName(firstName).lastName(lastName).email(email).build();

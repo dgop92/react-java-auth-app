@@ -34,9 +34,9 @@ public class UserIdpCreateUseCase implements IdpCreateUserStrategy {
 
     @Override
     public User create(String authUserId, IdpProfile idpProfile) {
-        logger.info("Creating user with authUserId: {}", authUserId);
         AuthUser finalAuthUser = new AuthUser(authUserId);
 
+        logger.info("Finding AppUser with authUserId: {}", authUserId);
         Optional<AppUser> appUser = appUserFindUseCase.getOneBy(AppUserSearch.builder().authUserId(authUserId).build());
         if (appUser.isPresent()) {
             logger.debug("Found existing AppUser for authUserId: {}", authUserId);
@@ -60,10 +60,11 @@ public class UserIdpCreateUseCase implements IdpCreateUserStrategy {
 
         AppUser finalAppUser = appUser.orElseGet(() -> {
             logger.info("Creating new AppUser for authUserId: {}", authUserId);
-            return appUserCreateUseCase.create(appUserCreate, finalAuthUser);
+            AppUser createdAppUser = appUserCreateUseCase.create(appUserCreate, finalAuthUser);
+            logger.info("Successfully created user with authUserId: {}", authUserId);
+            return createdAppUser;
         });
 
-        logger.info("Successfully created user with authUserId: {}", authUserId);
         return User.builder()
                 .authUser(finalAuthUser)
                 .appUser(finalAppUser)

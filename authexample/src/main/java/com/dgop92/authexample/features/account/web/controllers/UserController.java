@@ -7,7 +7,6 @@ import com.dgop92.authexample.features.account.web.controllers.dto.EmailPassword
 import com.dgop92.authexample.features.account.definitions.auth.schemas.EmailPasswordUserCreate;
 import com.dgop92.authexample.features.account.definitions.user.IEmailPasswordCreateUserStrategy;
 import com.dgop92.authexample.features.account.definitions.user.IUserDeleteUseCase;
-import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.User;
 import com.dgop92.authexample.features.account.web.controllers.schemas.SchemaAdapters;
 import com.dgop92.authexample.path.ControllerPaths;
@@ -89,12 +88,7 @@ public class UserController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = AppUserSchema.class))
                     }
             ),
-            @ApiResponse(
-                    responseCode = "401",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
-                    }
-            )
+            @ApiResponse(responseCode = "401", content = {@Content(mediaType = "application/json")})
     })
     ResponseEntity<AppUserSchema> getMe(Authentication authentication) {
         User user = restAuthUtils.getUserFromAuthentication(authentication);
@@ -111,12 +105,7 @@ public class UserController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = AppUserSchema.class))
                     }
             ),
-            @ApiResponse(
-                    responseCode = "401",
-                    content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))
-                    }
-            )
+            @ApiResponse(responseCode = "401", content = {@Content(mediaType = "application/json")})
     })
     ResponseEntity<Void> deleteMe(Authentication authentication) {
         User user = restAuthUtils.getUserFromAuthentication(authentication);
