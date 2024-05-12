@@ -1,11 +1,15 @@
 import { useEffect } from "react";
-import { useAuth } from "../../account/providers/hooks";
-import { Box, Stack, Typography, Button } from "@mui/material";
-import { firebaseAuth } from "../../account/services/firebase-service";
+import { Stack, Typography, Button, Box } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../account/providers/hooks";
+import { firebaseAuth } from "../../../account/services/firebase-service";
 
-export default function Dashboard() {
+export interface HeaderProps {
+  title: string;
+}
+
+export function Header({ title }: HeaderProps) {
   const { firebaseUser } = useAuth();
   const navigate = useNavigate();
 
@@ -23,18 +27,21 @@ export default function Dashboard() {
   }, [firebaseUser]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        width: "100vw",
-        overflowY: "hidden",
-      }}
+    <Stack
+      width="100%"
+      sx={{ backgroundColor: "background.paper" }}
+      alignItems="center"
+      mb={4}
     >
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ px: 4, py: 2, width: "100%" }}
+        sx={{
+          p: { xs: 2, md: 4 },
+          width: "100%",
+          maxWidth: "1400px",
+        }}
       >
         <Typography
           variant="h2"
@@ -46,7 +53,7 @@ export default function Dashboard() {
             fontSize: 36,
           }}
         >
-          Dashboard
+          {title}
         </Typography>
         <Button
           aria-label="log-out"
@@ -58,6 +65,6 @@ export default function Dashboard() {
           Logout
         </Button>
       </Stack>
-    </Box>
+    </Stack>
   );
 }

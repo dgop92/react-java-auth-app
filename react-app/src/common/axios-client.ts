@@ -1,16 +1,29 @@
 import axios from "axios";
 import { APIError, ErrorCode } from "./errors";
+import { firebaseAuth } from "../features/account/services/firebase-service";
 
 export const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL,
   timeout: 6000,
 });
 
+axiosClient.interceptors.request.use(
+  async (config) => {
+    const token = await firebaseAuth.currentUser?.getIdToken();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // eslint-disable-next-line no-param-reassign
+    config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
     const data = error.response.data;
-    const apiErrorData = data?.apierror;
+    const apiErrorData = data;
 
     if (apiErrorData === undefined) {
       return Promise.reject(error);
