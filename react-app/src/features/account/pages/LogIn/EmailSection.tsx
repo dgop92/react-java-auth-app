@@ -6,6 +6,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { LogInData, LogInSchema } from "../../schemas/login-schema";
 import { firebaseAuth } from "../../services/firebase-service";
+import { useSnackbar } from "notistack";
+import { ERROR_SNACKBAR_OPTIONS } from "../../../../utils/customSnackbar";
 
 export function EmailSection() {
   const {
@@ -16,11 +18,16 @@ export function EmailSection() {
     resolver: joiResolver(LogInSchema),
   });
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const onSubmit: SubmitHandler<LogInData> = async (data) => {
     try {
       await firebaseAuth.signInWithEmailAndPassword(data.email, data.password);
     } catch (error) {
-      console.error("Error signing in: ", error);
+      enqueueSnackbar(
+        "Sorry, something went wrong, try again later",
+        ERROR_SNACKBAR_OPTIONS
+      );
     }
   };
 

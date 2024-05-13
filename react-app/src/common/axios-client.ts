@@ -10,10 +10,9 @@ export const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   async (config) => {
     const token = await firebaseAuth.currentUser?.getIdToken();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line no-param-reassign
-    config.headers.Authorization = `Bearer ${token}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error)

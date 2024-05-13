@@ -9,6 +9,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { accountRepository } from "../../../account/repositories/factory";
 import { useMutation } from "@tanstack/react-query";
+import { useSnackbar } from "notistack";
+import {
+  ERROR_SNACKBAR_OPTIONS,
+  SUCCESS_SNACKBAR_OPTIONS,
+} from "../../../../utils/customSnackbar";
 
 export function BasicInfo() {
   const {
@@ -19,20 +24,27 @@ export function BasicInfo() {
     resolver: joiResolver(UpdateProfileSchema),
   });
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const mutation = useMutation({
     mutationFn: async (data: UpdateProfileData) => {
       await accountRepository.updateProfile(data);
     },
     onSuccess: async () => {
-      console.log("Profile updated successfully");
+      enqueueSnackbar(
+        "Your profile has been updated successfully",
+        SUCCESS_SNACKBAR_OPTIONS
+      );
     },
-    onError: (error) => {
-      console.log(error);
+    onError: () => {
+      enqueueSnackbar(
+        "Sorry, something went wrong, try again later",
+        ERROR_SNACKBAR_OPTIONS
+      );
     },
   });
 
   const onSubmit: SubmitHandler<UpdateProfileData> = (data) => {
-    console.log(data);
     mutation.mutate(data);
   };
 

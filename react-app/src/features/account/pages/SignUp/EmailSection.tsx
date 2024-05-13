@@ -14,6 +14,9 @@ import { SignUpData, SignUpSchema } from "../../schemas/signup-schema";
 import { useMutation } from "@tanstack/react-query";
 import { accountRepository } from "../../repositories/factory";
 import { firebaseAuth } from "../../services/firebase-service";
+import { useSnackbar } from "notistack";
+import { APIError } from "../../../../common/errors";
+import { ERROR_SNACKBAR_OPTIONS } from "../../../../utils/customSnackbar";
 
 export function EmailSection() {
   const {
@@ -24,24 +27,40 @@ export function EmailSection() {
     resolver: joiResolver(SignUpSchema),
   });
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const mutation = useMutation({
     mutationFn: async (data: SignUpData) => {
       await accountRepository.registerWithEmail(data);
     },
     onSuccess: async (_, variables) => {
-      console.log("User registered successfully");
       try {
         await firebaseAuth.signInWithEmailAndPassword(
           variables.email,
           variables.password
         );
       } catch (error) {
-        console.log("An error occurred while signing in the user");
+        enqueueSnackbar(
+          "Sorry, something went wrong, go to login page and try again",
+          ERROR_SNACKBAR_OPTIONS
+        );
       }
     },
     onError: (error) => {
-      console.log("An error occurred while registering the user");
-      console.log(error);
+      if (error instanceof APIError) {
+        if (error.statusCode === 409) {
+          enqueueSnackbar(
+            "Sorry, this email is already in use, try another",
+            ERROR_SNACKBAR_OPTIONS
+          );
+
+          return;
+        }
+      }
+      enqueueSnackbar(
+        "Sorry, something went wrong, try again later",
+        ERROR_SNACKBAR_OPTIONS
+      );
     },
   });
 
