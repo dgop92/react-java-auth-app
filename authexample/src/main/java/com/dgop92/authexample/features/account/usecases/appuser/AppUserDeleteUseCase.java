@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Component
@@ -32,7 +34,8 @@ public class AppUserDeleteUseCase implements IAppUserDeleteUseCase {
             throw new ApplicationException("app user not found", ExceptionCode.NOT_FOUND);
         }
 
-        repository.deleteById(id);
+        appUserJPAContainer.get().setDeletedAt(LocalDateTime.now(ZoneOffset.UTC));
+        repository.save(appUserJPAContainer.get());
         logger.info("App user deleted with id: {}", id);
     }
 }

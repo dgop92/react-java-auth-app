@@ -62,7 +62,7 @@ public class AppUserFindTests {
         var appUserFound = appUserFindUseCase.getOneBy(appUserSearchInput);
 
         Assertions.assertThat(appUserFound).isNotEmpty();
-        Assertions.assertThat(appUserFound.get()).isEqualTo(originalAppUser);
+        compareAppUsers(appUserFound.get(), originalAppUser);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class AppUserFindTests {
         var appUserFound = appUserFindUseCase.getOneBy(appUserSearchInput);
 
         Assertions.assertThat(appUserFound).isNotEmpty();
-        Assertions.assertThat(appUserFound.get()).isEqualTo(originalAppUser);
+        compareAppUsers(appUserFound.get(), originalAppUser);
     }
 
     @Test
@@ -86,8 +86,14 @@ public class AppUserFindTests {
         var appUserFound = appUserFindUseCase.getOneBy(appUserSearchInput);
 
         Assertions.assertThat(appUserFound).isNotEmpty();
-        Assertions.assertThat(appUserFound.get()).isEqualTo(originalAppUser);
+        compareAppUsers(appUserFound.get(), originalAppUser);
     }
 
-
+    private void compareAppUsers(AppUser appUser1, AppUser appUser2) {
+        Assertions.assertThat(appUser1.getId()).isEqualTo(appUser2.getId());
+        Assertions.assertThat(appUser1.getFirstName()).isEqualTo(appUser2.getFirstName());
+        Assertions.assertThat(appUser1.getLastName()).isEqualTo(appUser2.getLastName());
+        Assertions.assertThat(appUser1.getEmail()).isEqualTo(appUser2.getEmail());
+        Assertions.assertThat(appUser1.getAuthUserId()).isEqualTo(appUser2.getAuthUserId());
+    }
 }

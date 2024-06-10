@@ -13,6 +13,9 @@ public class AppUserMapper {
                 .firstName(appUserJPA.getFirstName())
                 .lastName(appUserJPA.getLastName())
                 .email(appUserJPA.getEmail())
+                .createdAt(appUserJPA.getCreatedAt())
+                .updatedAt(appUserJPA.getUpdatedAt())
+                .deletedAt(appUserJPA.getDeletedAt())
                 .build();
     }
 
@@ -23,6 +26,9 @@ public class AppUserMapper {
                 .firstName(appUser.getFirstName())
                 .lastName(appUser.getLastName())
                 .email(appUser.getEmail())
+                .createdAt(appUser.getCreatedAt())
+                .updatedAt(appUser.getUpdatedAt())
+                .deletedAt(appUser.getDeletedAt())
                 .build();
     }
 }

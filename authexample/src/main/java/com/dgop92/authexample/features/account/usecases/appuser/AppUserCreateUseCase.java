@@ -14,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 @Component
 public class AppUserCreateUseCase implements IAppUserCreateUseCase {
 
@@ -42,6 +45,8 @@ public class AppUserCreateUseCase implements IAppUserCreateUseCase {
                 .lastName(lastName)
                 .authUserId(authUser.getId())
                 .email(input.getEmail())
+                .createdAt(LocalDateTime.now(ZoneOffset.UTC))
+                .updatedAt(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
 
         AppUserJPA finalAppUserJPA = repository.save(appUserJPA);

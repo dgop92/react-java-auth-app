@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Component
@@ -52,6 +54,8 @@ public class AppUserUpdateUseCase implements IAppUserUpdateUseCase {
             logger.debug("Updating app user last name to: {}", input.getLastName());
             appUserJPA.setLastName(input.getLastName());
         }
+
+        appUserJPA.setUpdatedAt(LocalDateTime.now(ZoneOffset.UTC));
 
         repository.save(appUserJPA);
 

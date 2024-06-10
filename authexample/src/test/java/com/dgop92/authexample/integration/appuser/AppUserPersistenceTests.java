@@ -95,9 +95,14 @@ public class AppUserPersistenceTests {
             var foundAppUser = appUserResult.get();
             Assertions.assertThat(foundAppUser.getFirstName()).isEqualTo(data.getFirstName());
 
+            // the updated at field should be greater than the created at field
+            Assertions.assertThat(foundAppUser.getUpdatedAt()).isAfter(foundAppUser.getCreatedAt());
+
             // assert that the remaining fields has not been updated
-            var manualUpdatedAppUser = originalAppUser.toBuilder().firstName(data.getFirstName()).build();
-            Assertions.assertThat(manualUpdatedAppUser).isEqualTo(foundAppUser);
+            Assertions.assertThat(originalAppUser.getAuthUserId()).isEqualTo(foundAppUser.getAuthUserId());
+            Assertions.assertThat(originalAppUser.getLastName()).isEqualTo(foundAppUser.getLastName());
+            Assertions.assertThat(originalAppUser.getEmail()).isEqualTo(foundAppUser.getEmail());
+            Assertions.assertThat(originalAppUser.getDeletedAt()).isNull();
         } else {
             Assertions.fail("appUser not found");
         }
@@ -121,15 +126,20 @@ public class AppUserPersistenceTests {
             var foundAppUser = appUserResult.get();
             Assertions.assertThat(foundAppUser.getLastName()).isEqualTo(data.getLastName());
 
+            // the updated at field should be greater than the created at field
+            Assertions.assertThat(foundAppUser.getUpdatedAt()).isAfter(foundAppUser.getCreatedAt());
+
             // assert that the remaining fields has not been updated
-            var manualUpdatedAppUser = originalAppUser.toBuilder().lastName(data.getLastName()).build();
-            Assertions.assertThat(manualUpdatedAppUser).isEqualTo(foundAppUser);
+            Assertions.assertThat(originalAppUser.getAuthUserId()).isEqualTo(foundAppUser.getAuthUserId());
+            Assertions.assertThat(originalAppUser.getFirstName()).isEqualTo(foundAppUser.getFirstName());
+            Assertions.assertThat(originalAppUser.getEmail()).isEqualTo(foundAppUser.getEmail());
+            Assertions.assertThat(originalAppUser.getDeletedAt()).isNull();
         } else {
             Assertions.fail("appUser not found");
         }
     }
-    @Test
 
+    @Test
     public void Should_DeleteAppUser_WhenAppUserExists() {
         appUserDeleteUseCase.deleteOneById(originalAppUser.getId());
         var appUserSearchInput = AppUserSearch.builder().id(originalAppUser.getId()).build();

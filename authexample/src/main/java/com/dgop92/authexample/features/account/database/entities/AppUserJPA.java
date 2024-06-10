@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+
 
 @Data
 @AllArgsConstructor
@@ -34,5 +36,13 @@ public class AppUserJPA {
 
     @Column(length = 80, nullable = false)
     private String lastName;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    private LocalDateTime deletedAt;
 
 }

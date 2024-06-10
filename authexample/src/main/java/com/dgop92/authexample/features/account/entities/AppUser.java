@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @Builder(toBuilder = true)
@@ -23,4 +25,12 @@ public class AppUser {
 
     @NonNull
     private String lastName;
+
+    @NonNull
+    private LocalDateTime createdAt;
+
+    @NonNull
+    private LocalDateTime updatedAt;
+
+    private LocalDateTime deletedAt;
 }

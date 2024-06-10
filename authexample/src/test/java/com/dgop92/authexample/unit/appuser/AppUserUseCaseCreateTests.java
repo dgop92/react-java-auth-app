@@ -18,6 +18,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.function.Function;
 
@@ -50,11 +52,14 @@ public class AppUserUseCaseCreateTests {
                 .lastName(finalAppUser.getLastName())
                 .authUserId(authUserId)
                 .email(finalAppUser.getEmail())
+                .createdAt(LocalDateTime.now(ZoneOffset.UTC))
+                .updatedAt(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
 
         var finalAppUserJPA = appUserJPA.toBuilder().id(finalAppUser.getId()).build();
 
-        when(appUserRepository.save(Mockito.eq(appUserJPA))).thenReturn(finalAppUserJPA);
+        // Cannot use exact match for appUserJPA because of the createdAt and updatedAt fields
+        when(appUserRepository.save(Mockito.any(AppUserJPA.class))).thenReturn(finalAppUserJPA);
 
         var appUserCreated = appUserUseCase.create(appUserCreateInput, authUser);
 
