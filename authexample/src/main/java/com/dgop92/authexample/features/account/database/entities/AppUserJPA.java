@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity(name = "app_user")
 @Table(name = "app_user", uniqueConstraints = {
         @UniqueConstraint(name = "auth_user_id_unique", columnNames = "authUserId"),
-        @UniqueConstraint(name = "email_unique", columnNames = "email")
+        @UniqueConstraint(name = "email_unique", columnNames = {"email", "deleted_at"})
 })
 public class AppUserJPA {
 

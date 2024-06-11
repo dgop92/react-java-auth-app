@@ -106,4 +106,22 @@ public class UserPersistenceTests {
         Assertions.assertThat(user).isEmpty();
     }
 
+    @Test
+    public void Should_CreateUser_WhenSoftDeletedUserWithSameEmail() {
+        EmailPasswordUserCreate input = UserTestDataUtil.getValidEmailPasswordUserCreateInput();
+
+        User createdUser = userEmailPasswordCreateUseCase.create(input);
+        String userId = createdUser.getAuthUser().getId();
+
+        userDeleteUseCase.deleteByUserId(createdUser.getAuthUser().getId());
+
+        Optional<User> user = userFindUseCase.getOneByUserId(userId);
+        Assertions.assertThat(user).isEmpty();
+
+        // Create a new user with the same email
+        User createdUser2 = userEmailPasswordCreateUseCase.create(input);
+        // Should not throw an exception, isNotNUll is just a dummy assertion
+        Assertions.assertThat(createdUser2).isNotNull();
+    }
+
 }
