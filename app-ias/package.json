@@ -1,0 +1,25 @@
+{
+  "name": "app-aws-iac",
+  "version": "0.1.0",
+  "bin": {
+    "app-aws-iac": "bin/app-aws-iac.js"
+  },
+  "scripts": {
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "20.10.4",
+    "aws-cdk": "^2.142.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "5.2.2"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.142.1",
+    "constructs": "^10.0.0",
+    "dotenv": "^16.3.1",
+    "source-map-support": "^0.5.21"
+  }
+}
