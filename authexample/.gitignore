@@ -36,3 +36,8 @@ build/
 
 *.env
 flyway.conf
+
+# Firebase
+
+*-debug.log
+.firebaserc
