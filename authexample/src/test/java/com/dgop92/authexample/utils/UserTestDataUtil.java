@@ -5,6 +5,7 @@ import com.dgop92.authexample.features.account.definitions.appuser.schemas.AppUs
 import com.dgop92.authexample.features.account.definitions.auth.schemas.EmailPasswordUserCreate;
 import com.dgop92.authexample.features.account.entities.AppUser;
 import com.dgop92.authexample.features.account.entities.AuthUser;
+import com.dgop92.authexample.features.account.entities.User;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -47,5 +48,9 @@ public class UserTestDataUtil {
                 .createdAt(LocalDateTime.now(ZoneOffset.UTC))
                 .updatedAt(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
+    }
+
+    public static User getValidUser() {
+        return new User(getValidAuthUser(), getValidAppUser());
     }
 }

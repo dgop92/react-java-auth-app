@@ -1,9 +1,9 @@
 package com.dgop92.authexample.features.account.web.controllers;
 
 import com.dgop92.authexample.common.web.ApiError;
+import com.dgop92.authexample.features.account.definitions.appuser.IAppUserUpdateUseCase;
 import com.dgop92.authexample.features.account.definitions.appuser.schemas.AppUserUpdate;
 import com.dgop92.authexample.features.account.entities.AppUser;
-import com.dgop92.authexample.features.account.usecases.appuser.AppUserUpdateUseCase;
 import com.dgop92.authexample.features.account.web.RestAuthUtils;
 import com.dgop92.authexample.features.account.web.controllers.dto.AppUserUpdateDTO;
 import com.dgop92.authexample.features.account.web.controllers.schemas.AppUserSchema;
@@ -35,14 +35,14 @@ public class UserController {
 
     private final IUserDeleteUseCase userDeleteUseCase;
 
-    private final AppUserUpdateUseCase appUserUpdateUseCase;
+    private final IAppUserUpdateUseCase appUserUpdateUseCase;
 
     private final RestAuthUtils restAuthUtils;
 
     public UserController(
             IEmailPasswordCreateUserStrategy emailPasswordCreateUserService,
             IUserDeleteUseCase userDeleteUseCase,
-            AppUserUpdateUseCase appUserUpdateUseCase,
+            IAppUserUpdateUseCase appUserUpdateUseCase,
             RestAuthUtils restAuthUtils
     ) {
         this.emailPasswordCreateUserService = emailPasswordCreateUserService;

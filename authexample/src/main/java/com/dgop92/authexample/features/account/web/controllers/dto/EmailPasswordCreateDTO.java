@@ -32,6 +32,6 @@ public class EmailPasswordCreateDTO {
     @Override
     public String toString() {
         // We cannot log the password due to security reasons
-        return String.format("AuthUserCreate{email='%s'}", email);
+        return String.format("EmailPasswordCreateDTO{email='%s'}", email);
     }
 }
