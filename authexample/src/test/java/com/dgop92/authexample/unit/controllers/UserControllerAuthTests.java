@@ -6,7 +6,7 @@ import com.dgop92.authexample.features.account.definitions.user.IEmailPasswordCr
 import com.dgop92.authexample.features.account.definitions.user.IUserDeleteUseCase;
 import com.dgop92.authexample.features.account.entities.User;
 import com.dgop92.authexample.features.account.web.RestAuthUtils;
-import com.dgop92.authexample.features.account.web.SecurityConfiguration;
+import com.dgop92.authexample.common.web.SecurityConfiguration;
 import com.dgop92.authexample.features.account.web.controllers.UserController;
 import com.dgop92.authexample.features.account.web.controllers.dto.AppUserUpdateDTO;
 import com.dgop92.authexample.features.account.web.controllers.dto.EmailPasswordCreateDTO;

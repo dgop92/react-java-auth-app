@@ -1,5 +1,7 @@
-package com.dgop92.authexample.features.account.web;
+package com.dgop92.authexample.common.web;
 
+import com.dgop92.authexample.common.ratelimit.AnonymousThrottlingFilter;
+import com.dgop92.authexample.common.ratelimit.GlobalRateLimitConfig;
 import com.dgop92.authexample.path.ControllerPaths;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
@@ -22,11 +25,17 @@ public class SecurityConfiguration {
     private String allowedOriginsAsString;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public AnonymousThrottlingFilter anonymousThrottlingFilter(GlobalRateLimitConfig globalRateLimitConfig) {
+        return new AnonymousThrottlingFilter(globalRateLimitConfig.getPublicBucketConfigPerRoute());
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, AnonymousThrottlingFilter anonymousThrottlingFilter) throws Exception {
 
         List<String> allowedOrigins = List.of(allowedOriginsAsString.split(","));
 
         http.httpBasic(AbstractHttpConfigurer::disable)
+                .addFilterBefore(anonymousThrottlingFilter, AuthorizationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new CorsConfiguration();
