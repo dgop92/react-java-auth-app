@@ -3,6 +3,7 @@ package com.dgop92.authexample.common.ratelimit;
 import io.github.bucket4j.Bandwidth;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RateLimitConfigBuilder {
 
@@ -39,7 +40,7 @@ public class RateLimitConfigBuilder {
         private String currentRoute;
 
         public RateLimitConfigBuilderImpl() {
-            this.rateLimitConfig = new java.util.HashMap<>();
+            this.rateLimitConfig = new ConcurrentHashMap<>();
         }
 
         @Override

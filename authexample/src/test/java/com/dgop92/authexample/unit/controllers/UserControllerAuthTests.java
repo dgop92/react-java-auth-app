@@ -1,17 +1,17 @@
 package com.dgop92.authexample.unit.controllers;
 
 import com.dgop92.authexample.common.exceptions.InvalidInputException;
+import com.dgop92.authexample.common.web.SecurityConfiguration;
 import com.dgop92.authexample.features.account.definitions.appuser.IAppUserUpdateUseCase;
 import com.dgop92.authexample.features.account.definitions.user.IEmailPasswordCreateUserStrategy;
 import com.dgop92.authexample.features.account.definitions.user.IUserDeleteUseCase;
 import com.dgop92.authexample.features.account.entities.User;
 import com.dgop92.authexample.features.account.web.RestAuthUtils;
-import com.dgop92.authexample.common.web.SecurityConfiguration;
 import com.dgop92.authexample.features.account.web.controllers.UserController;
 import com.dgop92.authexample.features.account.web.controllers.dto.AppUserUpdateDTO;
 import com.dgop92.authexample.features.account.web.controllers.dto.EmailPasswordCreateDTO;
 import com.dgop92.authexample.path.ControllerPaths;
-import com.dgop92.authexample.utils.JWTSecurityTestConfig;
+import com.dgop92.authexample.utils.SecurityTestConfig;
 import com.dgop92.authexample.utils.UserTestDataUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import({SecurityConfiguration.class, JWTSecurityTestConfig.class})
+@Import({SecurityConfiguration.class, SecurityTestConfig.class})
 @WebMvcTest(controllers = UserController.class)
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
