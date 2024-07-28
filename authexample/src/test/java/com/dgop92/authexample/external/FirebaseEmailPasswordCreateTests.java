@@ -2,13 +2,11 @@ package com.dgop92.authexample.external;
 
 import com.dgop92.authexample.common.exceptions.ExceptionCode;
 import com.dgop92.authexample.common.exceptions.RepositoryException;
-import com.dgop92.authexample.features.account.definitions.auth.schemas.EmailPasswordUserCreate;
-import com.dgop92.authexample.features.account.entities.AuthUser;
 import com.dgop92.authexample.features.account.external.firebase.FirebaseAuthUserService;
+import com.dgop92.authexample.features.account.external.firebase.FirebaseConfig;
 import com.dgop92.authexample.features.account.external.firebase.FirebaseEmailPasswordService;
 import com.dgop92.authexample.utils.FirebaseTestDataUtil;
 import com.dgop92.authexample.utils.UserTestDataUtil;
-import jakarta.validation.Validation;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("classpath:application.properties")
-@Import(AuthFirebaseTestConfig.class)
+@Import({FirebaseConfig.class, AuthFirebaseTestConfig.class})
 public class FirebaseEmailPasswordCreateTests {
 
     @Autowired

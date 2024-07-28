@@ -17,9 +17,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.function.Function;
 
@@ -52,8 +49,8 @@ public class AppUserUseCaseCreateTests {
                 .lastName(finalAppUser.getLastName())
                 .authUserId(authUserId)
                 .email(finalAppUser.getEmail())
-                .createdAt(LocalDateTime.now(ZoneOffset.UTC))
-                .updatedAt(LocalDateTime.now(ZoneOffset.UTC))
+                .createdAt(finalAppUser.getCreatedAt())
+                .updatedAt(finalAppUser.getUpdatedAt())
                 .build();
 
         var finalAppUserJPA = appUserJPA.toBuilder().id(finalAppUser.getId()).build();

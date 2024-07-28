@@ -20,6 +20,12 @@ public class FirebaseConfig {
 
     @PostConstruct
     public void init() {
+        // While executing tests, the FirebaseApp can be initialized multiple times, therefore
+        // we need to check if the app is already initialized
+        if (isAppInitialized()) {
+            return;
+        }
+
         try {
             InputStream serviceAccount = new ByteArrayInputStream(this.credentialsContent.getBytes(StandardCharsets.UTF_8));
             GoogleCredentials gc = GoogleCredentials.fromStream(serviceAccount);
@@ -29,5 +35,9 @@ public class FirebaseConfig {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private boolean isAppInitialized() {
+        return !FirebaseApp.getApps().isEmpty();
     }
 }
